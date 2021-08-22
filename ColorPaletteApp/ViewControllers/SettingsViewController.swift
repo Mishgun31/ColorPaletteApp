@@ -40,7 +40,6 @@ class SettingsViewController: UIViewController {
         setValuesForSliders()
         setValuesForLabels()
         setValuesForTextFields()
-        addDoneButtonOnKeyboard()
         
         registerForKeboardNotifications()
         addTapGestureRecognizer()
@@ -113,8 +112,29 @@ extension SettingsViewController {
     }
 }
 
-//MARK: - Working with TextFields
+//MARK: - UITextFieldDelegate
 extension SettingsViewController: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        let toolBar = UIToolbar()
+        textField.inputAccessoryView = toolBar
+        toolBar.sizeToFit()
+        
+        let flexSpace = UIBarButtonItem(
+            barButtonSystemItem: .flexibleSpace,
+            target: nil,
+            action: nil
+        )
+        
+        let doneButton = UIBarButtonItem(
+            title: "Done",
+            style: .done,
+            target: self,
+            action: #selector(endEditing)
+        )
+        
+        toolBar.items = [flexSpace, doneButton]
+    }
     
     // Подумать над реорганизацией этого метода
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -179,33 +199,6 @@ extension SettingsViewController {
         
         scrollView.contentInset = contentInsets
         scrollView.scrollIndicatorInsets = contentInsets
-    }
-    
-    // Реализовать добавление тулбара в методе textFieldDidBeginEditing
-    private func addDoneButtonOnKeyboard() {
-        let toolBar = UIToolbar(
-            frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50)
-        )
-        
-        let flexSpace = UIBarButtonItem(
-            barButtonSystemItem: .flexibleSpace,
-            target: nil,
-            action: nil
-        )
-        
-        let doneButton = UIBarButtonItem(
-            barButtonSystemItem: .done,
-            target: self,
-            action: #selector(endEditing)
-        )
-        
-        let items = [flexSpace, doneButton]
-        toolBar.items = items
-        toolBar.sizeToFit()
-        
-        redTF.inputAccessoryView = toolBar
-        greenTF.inputAccessoryView = toolBar
-        blueTF.inputAccessoryView = toolBar
     }
     
     private func registerForKeboardNotifications() {
