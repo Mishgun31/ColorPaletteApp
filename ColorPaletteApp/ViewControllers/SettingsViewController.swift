@@ -86,9 +86,11 @@ extension SettingsViewController {
     }
     
     private func setValuesForSliders() {
-        redSlider.value = Float(color.cgColor.components?[0] ?? 0.5)
-        greenSlider.value = Float(color.cgColor.components?[1] ?? 0.5)
-        blueSlider.value = Float(color.cgColor.components?[2] ?? 0.5)
+        let color = CIColor(color: color)
+        
+        redSlider.value = Float(color.red)
+        greenSlider.value = Float(color.green)
+        blueSlider.value = Float(color.blue)
     }
     
     private func setValuesForTextFields() {
@@ -114,6 +116,7 @@ extension SettingsViewController {
 //MARK: - Working with TextFields
 extension SettingsViewController: UITextFieldDelegate {
     
+    // Подумать над реорганизацией этого метода
     func textFieldDidEndEditing(_ textField: UITextField) {
         switch textField {
         case redTF:
@@ -178,6 +181,7 @@ extension SettingsViewController {
         scrollView.scrollIndicatorInsets = contentInsets
     }
     
+    // Реализовать добавление тулбара в методе textFieldDidBeginEditing
     private func addDoneButtonOnKeyboard() {
         let toolBar = UIToolbar(
             frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50)
