@@ -141,7 +141,6 @@ extension SettingsViewController: UITextFieldDelegate {
         toolBar.items = [flexSpace, doneButton]
     }
     
-    // Подумать над реорганизацией этого метода
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard let text = textField.text else { return }
         
