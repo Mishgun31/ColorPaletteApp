@@ -102,6 +102,11 @@ extension SettingsViewController {
         String(format: "%.2f", slider.value)
     }
     
+    private func getFloatFrom(_ text: String) -> Float {
+        let formattedText = text.replacingOccurrences(of: ",", with: ".")
+        return Float(formattedText) ?? 1.0
+    }
+    
     private func setColor() -> UIColor {
         UIColor(
             red: CGFloat(redSlider.value),
@@ -138,19 +143,21 @@ extension SettingsViewController: UITextFieldDelegate {
     
     // Подумать над реорганизацией этого метода
     func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        
         switch textField {
         case redTF:
-            let redValue = getFloatFrom(textField)
+            let redValue = getFloatFrom(text)
             redSlider.setValue(redValue, animated: true)
             redValueLabel.text = getValue(from: redSlider)
             textField.text = getValue(from: redSlider)
         case greenTF:
-            let greenValue = getFloatFrom(textField)
+            let greenValue = getFloatFrom(text)
             greenSlider.setValue(greenValue, animated: true)
             greenValueLabel.text = getValue(from: greenSlider)
             textField.text = getValue(from: greenSlider)
         default:
-            let blueValue = getFloatFrom(textField)
+            let blueValue = getFloatFrom(text)
             blueSlider.setValue(blueValue, animated: true)
             blueValueLabel.text = getValue(from: blueSlider)
             textField.text = getValue(from: blueSlider)
@@ -158,12 +165,6 @@ extension SettingsViewController: UITextFieldDelegate {
         
         colorPaletteView.backgroundColor = setColor()
         color = setColor()
-    }
-    
-    private func getFloatFrom(_ textField: UITextField) -> Float {
-        let stringValue = textField.text ?? "1.0"
-        let formattedValue = stringValue.replacingOccurrences(of: ",", with: ".")
-        return Float(formattedValue) ?? 1.0
     }
 }
     
